@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import createExercise from '@/helper/exercise/createExercise';
 import getUsers from '@/helper/user/getUsers';
@@ -13,8 +13,8 @@ const CreateExercise = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = getUsers();
-            console.log(res)
+            const res = await getUsers();
+            setUsers(res)
         }
         catch (error) {
             console.log(error)
@@ -70,9 +70,7 @@ const CreateExercise = () => {
                             multiple
                             defaultValue={[]}
                         >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                            {users && users.map((user) => <MenuItem key={user._id} value={user.username}>{user.username}</MenuItem>)}
                         </Select>
                     </FormControl>
                     <button type="submit" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Create Exercise</button>
